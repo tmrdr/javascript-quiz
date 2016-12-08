@@ -1,12 +1,11 @@
-/*
-* Your names
-*/
 console.log("JS file is linked up!");
 
 $(document).ready(function(){
 
   //Variable for tracking player score
+  var questionNumber = 1;
   var playerScore = 0;
+  var playerWrong = 0;
 
   //Variable for quiz questions
   var quizQuestions = [
@@ -28,6 +27,7 @@ $(document).ready(function(){
                 [{"Red 3" : "Incorrect", "Walker 5" : "Incorrect", "Red 5" : "Correct"}],
                 [{"Tuskan Raiders" : "Incorrect", "Mynocks" : "Correct", "Banthas" : "Incorrect"}]];
 
+  $('#finalScore').toggle();
 
   var questionPush = $("#questionBox");
   //Set initial questionBox
@@ -49,8 +49,6 @@ $(document).ready(function(){
     correctAnswer();
     nextQuestion();
     nextAnswers();
-
-
   });
 
   var i = 1;
@@ -73,15 +71,29 @@ $(document).ready(function(){
 
   function correctAnswer() {
     if ($('input[type=radio]:checked').val() === "Correct") {
-      playerScore ++;
-      console.log("Correct!", playerScore);
-      $("input:checked").removeAttr("checked");
+      if (questionNumber <= 7) {
+        questionNumber ++;
+        playerScore ++;
+        $('#playerCorrect').text(playerScore);
+        console.log("Correct!", playerScore);
+        $("input:checked").removeAttr("checked");
+      }
     }
     else {
-      console.log("WRONG!");
-      $("input:checked").removeAttr("checked");
+      if (questionNumber <= 7) {
+        playerWrong ++;
+        questionNumber ++;
+        $('#playerIncorrect').text(playerWrong);
+        console.log("WRONG!");
+        $("input:checked").removeAttr("checked");
+      }
     }
   }
-
+    function finalScore() {
+      if (questionNumber > 1) {
+        $('#finalScore').toggle();
+        $('#playerFinal').text(playerScore);
+      }
+    }
 
 });
